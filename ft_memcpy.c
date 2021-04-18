@@ -8,6 +8,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 
 	udest = (unsigned char *)dest;
 	usrc = (unsigned char *)src;
+	if (!(udest || usrc))
+		return (0);
 	i = 0;
 	while (i < n)
 	{

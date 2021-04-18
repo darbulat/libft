@@ -14,20 +14,22 @@ SRCS    = ft_memcpy.c ft_memset.c ft_bzero.c ft_isalpha.c ft_isdigit.c \
 	ft_strjoin.c ft_itoa.c ft_substr.c ft_strtrim.c ft_split.c \
 	ft_strrchr.c ft_strncmp.c
 
-OBJS    = $(SRCS:.c=.o)
+OBJS    = $(patsubst %.c,%.o,$(SRCS))
 
 all: $(NAME)
 
-$(NAME):
-		@$(CC) $(CFLAGS) $(HEAD) -c $(SRCS)
-		@$(AR) $(NAME) $(OBJS)
-		@$(RANLIB) $(NAME)
+$(NAME):$(OBJS) $(HEAD)
+		$(AR) $(NAME) $?
+		$(RANLIB) $(NAME)
+
+%.o : %.c
+		$(CC) $(CFLAGS)  -c $< -o $@
 
 clean:
-		@rm -f $(OBJS)
+		rm -f $(OBJS)
 
 fclean: clean
-		@rm -f $(NAME)
+		rm -f $(NAME)
 
 re:		fclean all
 

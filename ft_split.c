@@ -54,6 +54,8 @@ char	**ft_split(char const *str, char c)
 	int		count_words;
 	char	*s;
 
+	if (!str)
+		return (NULL);
 	s = ft_strdup(str);
 	count_words = ft_count_words(s, c);
 	strs = malloc(sizeof(char *) * (count_words + 1));
