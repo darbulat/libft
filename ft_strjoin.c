@@ -2,11 +2,13 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		len1;
-	int		len2;
-	int		i;
-	char	*str;
+	size_t		len1;
+	size_t		len2;
+	size_t		i;
+	char		*str;
 
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	str = malloc(sizeof(*str) * (len1 + len2 + 1));

@@ -22,7 +22,7 @@ all: $(NAME)
 $(NAME):$(OBJS) $(HEAD)
 		$(AR) $(NAME) $?
 
-%.o : %.c
+%.o : %.c $(HEAD)
 		$(CC) $(CFLAGS)  -c $< -o $@
 
 clean:
