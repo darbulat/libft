@@ -6,6 +6,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	int		j;
 	char	*str;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (s[i])

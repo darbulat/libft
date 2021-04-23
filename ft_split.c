@@ -1,6 +1,6 @@
 #include "libft.h"
 
-int	ft_count_words(char const *str, char c)
+static int	ft_count_words(char const *str, char c)
 {
 	int	count;
 	int	i;
@@ -22,51 +22,71 @@ int	ft_count_words(char const *str, char c)
 	return (count);
 }
 
-char	*ft_get_first_word(char **pstr, char c)
+static char	*ft_get_first_word(char const *str, char c)
 {
 	char	*word;
 	int		i;
-	int		j;
 
-	while (**pstr == c)
-		(*pstr)++;
 	i = 0;
-	while ((*((*pstr) + i)) && (((*((*pstr) + i) != c))))
+	while (str[i] && (str[i] != c))
 		i++;
 	word = (char *)malloc(sizeof(char) * (i + 1));
-	if ((void *)0 == word)
-		return ((void *)0);
-	j = 0;
-	while (j < i)
+	if (!word)
+		return (0);
+	i = 0;
+	while (str[i] && (str[i] != c))
 	{
-		word[j] = *((*pstr) + j);
-		j++;
+		word[i] = str[i];
+		i++;
 	}
-	(*pstr) += j;
-	word[j] = 0;
+	word[i] = '\0';
 	return (word);
+}
+
+static void	ft_skip_chars(char const **str, char c, int (*f)(char s, char c))
+{
+	if (f)
+	{
+		while (**str && f(**str, c))
+			(*str)++;
+	}
+	else
+	{
+		while (**str && (**str == c))
+			(*str)++;
+	}
+}
+
+static int	not_equal(char s, char c)
+{
+	return (s != c);
 }
 
 char	**ft_split(char const *str, char c)
 {
 	char	**strs;
 	int		i;
-	int		count_words;
-	char	*s;
 
 	if (!str)
 		return (NULL);
-	s = ft_strdup(str);
-	count_words = ft_count_words(s, c);
-	strs = malloc(sizeof(char *) * (count_words + 1));
-	if ((void *)0 == strs)
-		return ((void *)0);
-	i = 0;
-	while (i < count_words)
+	strs = malloc(sizeof(char *) * (ft_count_words(str, c) + 1));
+	if (!strs)
+		return (NULL);
+	i = -1;
+	while (*str)
 	{
-		strs[i] = ft_get_first_word(&s, c);
-		i++;
+		ft_skip_chars(&str, c, NULL);
+		if (*str && (*str != c))
+		{
+			strs[++i] = ft_get_first_word(str, c);
+			if (!strs[i])
+			{
+				free(strs);
+				return (0);
+			}
+			ft_skip_chars(&str, c, &not_equal);
+		}
 	}
-	strs[i] = (void *)0;
+	strs[i + 1] = NULL;
 	return (strs);
 }
