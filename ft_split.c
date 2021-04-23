@@ -80,10 +80,7 @@ char	**ft_split(char const *str, char c)
 		{
 			strs[++i] = ft_get_first_word(str, c);
 			if (!strs[i])
-			{
-				free(strs);
-				return (0);
-			}
+				return (ft_strsfree(strs, i));
 			ft_skip_chars(&str, c, &not_equal);
 		}
 	}
